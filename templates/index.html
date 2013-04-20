@@ -16,9 +16,15 @@
             {% endfor %}
             <img src="/scan.png?id={{ char.id }}">
             <td><a href="?delete={{ char['id'] }}">DELETE</a></td>
+            <table>
+                <tr>
+                    {% for dir in directions %}
+                    <td><a href="?move&char_id={{ char['id']}}&dir={{dir}}">{{dir}}</a></td>
+                    {% endfor %}
+                </tr>
+            </table>
         </table>
         {% endfor %}
     </p>
-
 </article>
 {% endblock %}

@@ -24,7 +24,7 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
-SESSION = "f1f49cdf-6cef-4d0b-8632-798356c40e17"
+SESSION = "7f50de88-747f-4203-ada6-5ff2f32131ca"
 
 redis = Redis()
 
@@ -36,6 +36,7 @@ if 'LOGGING' in app.config:
     logging.config.dictConfig(app.config['LOGGING'])
 
 base = "https://genericwitticism.com:8000/api3/"
+directions = ['left', 'right', 'up', 'down', 'upleft', 'upright', 'downleft', 'downright']
 
 ## Headers decorator
 def add_response_headers(headers={}):
@@ -106,6 +107,7 @@ def ratelimit(limit, per=300, send_x_headers=True,
 
 def talk(param):
     url = base + "?" + "&".join(["=".join([k, v]) for k, v in param.iteritems()])
+    print url
     return requests.get(url, verify=False, config={'encode_uri': False})
 
 
@@ -115,6 +117,12 @@ def index():
     if 'delete' in request.args:
         param = {'session': SESSION, 'command': 'deletecharacter', 'arg': request.args['delete']}
         talk(param)
+
+    if 'move' in request.args:
+        param = {'session': SESSION, 'command': 'move',
+                 'arg': request.args['char_id'], 'arg2': request.args['dir']}
+        r=talk(param)
+        print r.content
 
     param = {"session": SESSION, "command": "getparty"}
     r = requests.get(base, params=param, verify=False)
@@ -130,7 +138,7 @@ def index():
         r = requests.get(base, params=param, verify=False)
         characters.append(r.json)
 
-    return render_template('index.html', characters=characters)
+    return render_template('index.html', characters=characters, directions=directions)
 
 
 @app.route('/create', methods=['POST', 'GET'])
