@@ -24,7 +24,7 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
-SESSION = "2e49036c-26dc-4f61-8c95-c1594af36c90"
+SESSION = "f1f49cdf-6cef-4d0b-8632-798356c40e17"
 
 redis = Redis()
 
@@ -133,12 +133,18 @@ def create():
 
 @app.route('/scan.png')
 def scanpng():
+    char_id = request.args.get("id", None)
     fig = plt.figure(figsize=[10, 8])
     ax = fig.add_subplot(111)
     cmap = cm.Accent
 
     # Get this from API
-    area = np.array([[0,4,0,4,0,0],[4,4,0,4,4,4],[16,16,16,1862402080,16,589299744],[66,70,70,70,70,70],[66,822083654,66,66,66,66],[66,70,70,70,70,70]])
+    param = {}
+    param["session"] = SESSION
+    param["command"] = 'scan'
+    param["arg"] = char_id
+    r = talk(param)
+    area = np.array(r.json["area"])
 
     ax.imshow(area / float(0xFF000000), interpolation='none', cmap=cmap)
     x, y = np.nonzero((area % 2))
@@ -151,7 +157,7 @@ def scanpng():
     fig.savefig(buf, format="png")
     data = buf.getvalue()
 
-    return data
+    return str(area)
 
 
 @app.route('/api')
