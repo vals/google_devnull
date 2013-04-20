@@ -24,7 +24,7 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
-SESSION = "f1f49cdf-6cef-4d0b-8632-798356c40e17"
+SESSION = "38b2a52c-f12d-4c91-8e15-c48e1fb2e69a"
 
 redis = Redis()
 
@@ -36,6 +36,7 @@ if 'LOGGING' in app.config:
     logging.config.dictConfig(app.config['LOGGING'])
 
 base = "https://genericwitticism.com:8000/api3/"
+
 
 ## Headers decorator
 def add_response_headers(headers={}):
@@ -169,10 +170,14 @@ def scanpng():
     r = talk(param)
     area = np.array(r.json["area"])
 
-    ax.imshow(area / float(0xFF000000), interpolation='none', cmap=cmap)
+    extent = np.array([r.json["bx"], r.json["bx"] + area.shape[0], r.json["by"], r.json["by"] + area.shape[1]]) + 0.5
+    ax.imshow(area / float(0xFF000000), interpolation='none', cmap=cmap, extent=extent)
     x, y = np.nonzero((area % 2))
     if len(x) > 0:
         ax.scatter(x, y, edgecolor='none', label="BLOCKED")
+
+    ax.text(r.json["x"] + 0.5, r.json["y"] + 0.5, 'rA0WOqH4Z', horizontalalignment='center',
+         verticalalignment='center')
 
     ax.grid(True)
 
