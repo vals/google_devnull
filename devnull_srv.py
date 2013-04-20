@@ -24,7 +24,7 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
-SESSION = "38b2a52c-f12d-4c91-8e15-c48e1fb2e69a"
+SESSION = "5507b3be-de48-4d16-9817-32e2e8c471a5"
 
 redis = Redis()
 
@@ -171,7 +171,8 @@ def scanpng():
     area = np.array(r.json["area"])
 
     extent = np.array([r.json["bx"], r.json["bx"] + area.shape[0], r.json["by"], r.json["by"] + area.shape[1]]) + 0.5
-    ax.imshow(area / float(0xFF000000), interpolation='none', cmap=cmap, extent=extent)
+    arimg = np.log(area / float(0xFF000000))
+    ax.imshow(arimg, interpolation='none', cmap=cmap, extent=extent)
     x, y = np.nonzero((area % 2))
     if len(x) > 0:
         ax.scatter(x, y, edgecolor='none', label="BLOCKED")
