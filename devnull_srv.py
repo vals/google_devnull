@@ -24,11 +24,7 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
-<<<<<<< HEAD
-SESSION = "afd37b2b-4faf-4810-9bf9-368c938f82ba"
-=======
-SESSION = "7f50de88-747f-4203-ada6-5ff2f32131ca"
->>>>>>> 10286a4617a3e9ae05477190a3defc41de2b99a2
+SESSION = "8062429c-9f27-49e4-b941-2123d0cb921e"
 
 redis = Redis()
 
