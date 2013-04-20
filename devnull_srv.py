@@ -157,7 +157,7 @@ def create():
 @content_type_png
 def scanpng():
     char_id = request.args.get("id", None)
-    fig = plt.figure(figsize=[10, 8])
+    fig = plt.figure(figsize=[5, 5])
     ax = fig.add_subplot(111)
     cmap = cm.Accent
 
