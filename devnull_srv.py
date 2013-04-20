@@ -6,9 +6,9 @@ A quick example of how to use Redis as a task queue.
 
 import logging.config
 import os
-from functools import update_wrapper
+from functools import update_wrapper, wraps
 from redis import Redis, ConnectionError
-from flask import Flask, render_template, abort, request, session, abort, redirect, url_for, flash, jsonify, g
+from flask import Flask, render_template, abort, request, session, abort, redirect, url_for, flash, jsonify, g, make_response
 from tasks import *
 import time
 import json
@@ -36,6 +36,28 @@ if 'LOGGING' in app.config:
     logging.config.dictConfig(app.config['LOGGING'])
 
 base = "https://genericwitticism.com:8000/api3/"
+
+## Headers decorator
+def add_response_headers(headers={}):
+    """This decorator adds the headers passed in to the response"""
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            resp = make_response(f(*args, **kwargs))
+            h = resp.headers
+            for header, value in headers.items():
+                h[header] = value
+            return resp
+        return decorated_function
+    return decorator
+
+
+def content_type_png(f):
+    @wraps(f)
+    @add_response_headers({'Content-Type': 'image/png'})
+    def decorated_function(*args, **kwargs):
+        return f(*args, **kwargs)
+    return decorated_function
 
 
 ## Ratelimiting code
@@ -132,6 +154,7 @@ def create():
 
 
 @app.route('/scan.png')
+@content_type_png
 def scanpng():
     char_id = request.args.get("id", None)
     fig = plt.figure(figsize=[10, 8])
