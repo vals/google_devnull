@@ -80,11 +80,11 @@ def index():
 def add_start():
     """Grabs the args from the URL, starts the task, then redirects to show progress."""
     task = get.delay(base, params=request.args, verify=False)
+    print get_view_rate_limit().remaining
     while(True):
         rv = task.return_value
         if rv:
             return rv
-    #    return jsonify(ready=ready)
 
 @app.route('/progress')
 def add_progress():
