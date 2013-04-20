@@ -77,7 +77,7 @@ def index():
 
 @app.route('/api')
 @ratelimit(limit=10, per=1)
-def add_start():
+def devnull_api():
     """Grabs the args from the URL, starts the task, then redirects to show progress."""
     task = get.delay(base, params=request.args, verify=False)
     print get_view_rate_limit().remaining
