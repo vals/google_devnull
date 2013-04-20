@@ -174,13 +174,15 @@ def scanpng():
     if len(x) > 0:
         ax.scatter(x, y, edgecolor='none', label="BLOCKED")
 
+    ax.grid(True)
+
     FigureCanvasAgg(fig)
 
     buf = cStringIO.StringIO()
     fig.savefig(buf, format="png")
     data = buf.getvalue()
 
-    return str(area)
+    return data
 
 
 @app.route('/api')
