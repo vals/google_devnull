@@ -15,7 +15,16 @@ import json
 
 import requests
 
-SESSION = "69238bac-7636-45ee-8a6d-53ff31b50d08"
+import cStringIO
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_agg import FigureCanvasAgg
+from matplotlib import cm
+
+import numpy as np
+
+import matplotlib.pyplot as plt
+
+SESSION = "2e49036c-26dc-4f61-8c95-c1594af36c90"
 
 redis = Redis()
 
@@ -120,6 +129,29 @@ def create():
 
     else:
         return render_template('create.html')
+
+
+@app.route('/scan.png')
+def scanpng():
+    fig = plt.figure(figsize=[10, 8])
+    ax = fig.add_subplot(111)
+    cmap = cm.Accent
+
+    # Get this from API
+    area = np.array([[0,4,0,4,0,0],[4,4,0,4,4,4],[16,16,16,1862402080,16,589299744],[66,70,70,70,70,70],[66,822083654,66,66,66,66],[66,70,70,70,70,70]])
+
+    ax.imshow(area / float(0xFF000000), interpolation='none', cmap=cmap)
+    x, y = np.nonzero((area % 2))
+    if len(x) > 0:
+        ax.scatter(x, y, edgecolor='none', label="BLOCKED")
+
+    FigureCanvasAgg(fig)
+
+    buf = cStringIO.StringIO()
+    fig.savefig(buf, format="png")
+    data = buf.getvalue()
+
+    return data
 
 
 @app.route('/api')

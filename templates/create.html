@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome{% endblock %}
+{% block content %}
+<article class="tasks">
+
+    <h1>Create character</h1>
+    <p>
+        <form action="/create" method="POST">
+        <table>
+            <tr><td>Name</td><td>
+            <input type="text", value="foo" name="name"></td></tr>
+            <tr><td>str</td><td>
+            <input type="text", value="15" name="str"></td></tr>
+            <tr><td>dex</td><td>
+            <input type="text", value="15" name="dex"></td></tr>
+            <tr><td>con</td><td>
+            <input type="text", value="10" name="con"></td></tr>
+            <tr><td>int</td><td>
+            <input type="text", value="10" name="int"></td></tr>
+            <tr><td>wis</td><td>
+            <input type="text", value="10" name="wis"></td></tr>
+        </table>
+        <input type="submit" name="my-form" value="Send">
+        </form>
+    </p>
+
+</article>
+{% endblock %}
