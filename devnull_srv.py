@@ -38,6 +38,7 @@ if 'LOGGING' in app.config:
 base = "https://genericwitticism.com:8000/api3/"
 directions = ['left', 'right', 'up', 'down', 'upleft', 'upright', 'downleft', 'downright']
 
+
 ## Headers decorator
 def add_response_headers(headers={}):
     """This decorator adds the headers passed in to the response"""
@@ -177,10 +178,15 @@ def scanpng():
     r = talk(param)
     area = np.array(r.json["area"])
 
-    ax.imshow(area / float(0xFF000000), interpolation='none', cmap=cmap)
+    extent = np.array([r.json["bx"], r.json["bx"] + area.shape[0], r.json["by"], r.json["by"] + area.shape[1]]) + 0.5
+    arimg = np.log(area / float(0xFF000000))
+    ax.imshow(arimg, interpolation='none', cmap=cmap, extent=extent)
     x, y = np.nonzero((area % 2))
     if len(x) > 0:
         ax.scatter(x, y, edgecolor='none', label="BLOCKED")
+
+    ax.text(r.json["x"] + 0.5, r.json["y"] + 0.5, 'rA0WOqH4Z', horizontalalignment='center',
+         verticalalignment='center')
 
     ax.grid(True)
 
