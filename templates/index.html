@@ -3,22 +3,21 @@
 {% block title %}Welcome{% endblock %}
 {% block content %}
 <article class="tasks">
+
+    <h1>Characters</h1>
     <p>
-        An example of how to use Redis as a task queue within a Flask web application.
+        {% for char in characters %}
+        <h2>{{ char.name }}</h2>
+        <table>
+            {% for prop in char %}
+            <tr>
+                <td>{{ prop }}:</td><td>{{ char[prop] }}</td>
+            </tr>
+            {% endfor %}
+            <td><a href="?delete={{ char['id'] }}">DELETE</a></td>
+        </table>
+        {% endfor %}
     </p>
-    
-    <h1>Available Tasks</h1>
-    <ul>
-        <li><a href="add?x=1&y=1">Add 1 + 1</a></li>
-    </ul>
-    
-    <h1>How does it work?</h1>
-    <p>
-        Clicking 'Add' will tell the web app to start a new task, then display the progress page. In the code, you'll see
-        that starting a new task is as simple as pushing some data onto a <a href="http://redis.io/">Redis</a> list. The app is then
-        free to complete the web request while the external <strong>worker.py</strong> process does all the work. Meanwhile the processing
-        page, using AJAX, will poll the server until it responds with 'ready=true', to which it redirects you to the results page.
-        <br /><br />
-    </p>
+
 </article>
 {% endblock %}
