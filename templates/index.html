@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome{% endblock %}
+{% block content %}
+<article class="tasks">
+
+    <h1>Characters</h1>
+    <p>
+        {% for char in characters %}
+        <h2>{{ char.name }}</h2>
+        <table>
+            {% for prop in char %}
+            <tr>
+                <td>{{ prop }}:</td><td>{{ char[prop] }}</td>
+            </tr>
+            {% endfor %}
+            <img src="/scan.png?id={{ char.id }}">
+            <td><a href="?delete={{ char['id'] }}">DELETE</a></td>
+            <table>
+                <tr>
+                    {% for dir in directions %}
+                    <td><a href="?move&char_id={{ char['id']}}&dir={{dir}}">{{dir}}</a></td>
+                    {% endfor %}
+                </tr>
+            </table>
+        </table>
+        {% endfor %}
+    </p>
+</article>
+{% endblock %}

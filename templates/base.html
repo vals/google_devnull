@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>{%block fulltitle%}{% block title %}{% endblock %} - Hello Redis Tasks{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('.static', filename='style.css') }}" />
+    {% block additionalstyles %}{% endblock %}
+    {% block priorityscripts %}{% endblock %}
+</head>
+<body>
+    <div class="page">
+        <header>
+            <h1>/dev/null</h1>
+        </header>        
+        <div class="content-container">
+            <div class="content">
+            {% block content %}{% endblock %}
+            </div>
+            <div class="content-end"></div>
+        </div>
+    </div>
+{% block additionalscripts %}{% endblock %}
+</body>
+</html>
